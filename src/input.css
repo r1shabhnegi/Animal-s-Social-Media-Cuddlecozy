@@ -1,0 +1,13 @@
+input:invalid[notfocused='true'] ~ span {
+  display: block;
+  border: 2px solid red;
+}
+
+span {
+  display: none;
+}
+/* 
+input:invalid:not(:focus) + span {
+  display: block;
+  border: 2px solid red;
+} */
