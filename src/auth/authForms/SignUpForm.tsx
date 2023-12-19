@@ -1,9 +1,7 @@
 'use client';
-
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -15,29 +13,17 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
-const formSchema = z.object({
-  name: z
-    .string()
-    .min(2, { message: 'Name must be at least 2 characters' })
-    .max(18, {
-      message: 'Name must be less then 18 characters',
-    }),
-  username: z
-    .string()
-    .min(2, {
-      message: 'Username must be at least 2 characters',
-    })
-    .max(18, {
-      message: 'Username must be less then 18 characters',
-    }),
-  email: z.string().email(),
-  password: z.string().min(8, {
-    message: 'Username must be at least 8 characters',
-  }),
-});
+import { Link } from 'react-router-dom';
+import { signUpValidation } from '@/lib/validation';
+import { mutateCreateUser } from '@/tanstack/queriesAndMutations';
+import { useState } from 'react';
+
+const formSchema = signUpValidation;
 
 const SignUpForm = () => {
-  // 1. Define your form.
+  const [error, setError] = useState(false);
+  const { mutateAsync, isPending } = mutateCreateUser();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,19 +34,30 @@ const SignUpForm = () => {
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      setError(false);
+      const data = await mutateAsync(values);
+      if (!data) throw new Error();
+
+      console.log(data);
+    } catch (error) {
+      setError(true);
+      console.log(error);
+    }
   }
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className='space-y-2 w-1/4 px-8 py-6 rounded-lg bg-white'>
-        <h1 className=' text-4xl w-full mb-6 text-gray-800'>Sign Up</h1>
+        className='space-y-3 w-1/4 px-8 py-6 rounded-lg bg-white'>
+        <h1 className=' text-4xl w-full mb-5 text-gray-800'>Sign Up</h1>
+        {error && (
+          <p className='text-red-600 text-center'>
+            Something went wrong, Please try again!
+          </p>
+        )}
         <FormField
           control={form.control}
           name='name'
@@ -98,10 +95,12 @@ const SignUpForm = () => {
                   {...field}
                 />
               </FormControl>
+
               <FormMessage className='text-xs' />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name='email'
@@ -147,23 +146,24 @@ const SignUpForm = () => {
 
         <Button
           style={{
-            marginTop: '1.5rem',
-            marginBottom: '.5rem',
+            marginTop: '1rem',
+            marginBottom: '1rem',
           }}
           type='submit'
           className=' w-full'>
-          Submit
+          {isPending ? <p>Loading...</p> : <p>Submit</p>}
         </Button>
-
-        <Button
-          style={{
-            // marginTop: '1.5rem',
-            marginBottom: '0.5rem',
-          }}
-          type='button'
-          className=' w-full bg-blue-400'>
-          Sign In
-        </Button>
+        <Link to='sign-in'>
+          <Button
+            style={{
+              // marginTop: '1.5rem',
+              marginBottom: '0.5rem',
+            }}
+            type='button'
+            className=' w-full bg-blue-400'>
+            Sign In
+          </Button>
+        </Link>
       </form>
     </Form>
   );
