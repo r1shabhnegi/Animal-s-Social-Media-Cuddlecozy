@@ -15,9 +15,26 @@ export type CreateUserTypes = {
 };
 
 export type SaveUserDbTypes = {
-  userId: string;
+  accountId: string;
   name: string;
   username: string;
   email: string;
   imageUrl: URL;
+};
+
+export type SignInTypes = {
+  email: string;
+  password: string;
+};
+
+export type InitialStateTypes = {
+  userData: UserTypes;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+};
+
+export type SideBarTypes = {
+  imgURL: string;
+  route: string;
+  label: string;
 };

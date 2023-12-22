@@ -1,21 +1,21 @@
-import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query';
-import { createUser } from '@/appwrite/Api';
-import { CreateUserTypes } from '@/types';
-// import {createUs}
+import { useMutation } from '@tanstack/react-query';
+import { createAccount, signInAccount, signOutAccount } from '@/appwrite/Api';
+import { CreateUserTypes, SignInTypes } from '@/types';
 
-// const queryClient = useQueryClient();
-
-export const mutateCreateUser = () => {
+export const useCreateUser = () => {
   return useMutation({
-    mutationFn: (values: CreateUserTypes) => createUser(values),
-    // onSuccess: () => {
-    //   // Invalidate and refetch
-    //   queryClient.invalidateQueries({ queryKey: ['todos'] });
-    // },
+    mutationFn: (values: CreateUserTypes) => createAccount(values),
   });
 };
 
-// Queries
-// const query = useQuery({ queryKey: ['todos'], queryFn: getTodos });
+export const useSignInAccount = () => {
+  return useMutation({
+    mutationFn: (user: SignInTypes) => signInAccount(user),
+  });
+};
 
-// Mutations
+export const useSignOutAccount = () => {
+  return useMutation({
+    mutationFn: signOutAccount,
+  });
+};

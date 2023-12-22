@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 import {
   Form,
   FormControl,
@@ -13,16 +14,25 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { signUpValidation } from '@/lib/validation';
-import { mutateCreateUser } from '@/tanstack/queriesAndMutations';
+import {
+  useCreateUser,
+  useSignInAccount,
+} from '@/tanstack/queriesAndMutations';
 import { useState } from 'react';
+import { checkAuthUser, useAppDispatch } from '@/globals/authSlice';
 
 const formSchema = signUpValidation;
 
 const SignUpForm = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const [error, setError] = useState(false);
-  const { mutateAsync, isPending } = mutateCreateUser();
+  const [isLoading, setIsLoading] = useState(false);
+  const { mutateAsync: createAccount } = useCreateUser();
+  const { mutateAsync: signInAccount } = useSignInAccount();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,21 +47,37 @@ const SignUpForm = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setError(false);
-      const data = await mutateAsync(values);
+      setIsLoading(true);
+      const data = await createAccount(values);
       if (!data) throw new Error();
 
-      console.log(data);
+      const session = await signInAccount({
+        email: values.email,
+        password: values.password,
+      });
+      if (!session) throw new Error();
+
+      const loadAuth = await dispatch(checkAuthUser());
+
+      // console.log(loadAuth);
+      if (loadAuth) {
+        form.reset();
+        navigate('/');
+      }
     } catch (error) {
       setError(true);
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 
+  const pendingStatus = isLoading ? true : false;
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className='space-y-3 w-1/4 px-8 py-6 rounded-lg bg-white'>
+        className='space-y-3 w-1/4 sm:w-420 px-8 py-6 rounded-lg bg-white'>
         <h1 className=' text-4xl w-full mb-5 text-gray-800'>Sign Up</h1>
         {error && (
           <p className='text-red-600 text-center'>
@@ -144,19 +170,23 @@ const SignUpForm = () => {
           )}
         />
 
+        {/* <Button disabled>Please wait</Button> */}
         <Button
+          // disabled = false
+          disabled={pendingStatus}
           style={{
             marginTop: '1rem',
             marginBottom: '1rem',
           }}
           type='submit'
           className=' w-full'>
-          {isPending ? <p>Loading...</p> : <p>Submit</p>}
+          {isLoading ? <Loader2 className='mr-2 h-4 w-4 animate-spin' /> : ''}
+
+          {isLoading ? <p>Please wait</p> : <p>Submit</p>}
         </Button>
-        <Link to='sign-in'>
+        <Link to='/sign-in'>
           <Button
             style={{
-              // marginTop: '1.5rem',
               marginBottom: '0.5rem',
             }}
             type='button'
