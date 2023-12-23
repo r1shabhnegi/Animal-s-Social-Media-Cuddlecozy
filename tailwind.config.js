@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 module.exports = {
   darkMode: ['class'],
   content: [
@@ -31,10 +33,15 @@ module.exports = {
         'light-3': '#7878A3',
         'light-4': '#5C5C7B',
       },
-      borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+      screens: {
+        xs: '480px',
+      },
+      width: {
+        420: '420px',
+        465: '465px',
+      },
+      fontFamily: {
+        inter: ['Inter', 'sans-serif'],
       },
       keyframes: {
         'accordion-down': {

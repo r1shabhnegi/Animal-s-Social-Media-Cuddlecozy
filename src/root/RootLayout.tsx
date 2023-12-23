@@ -7,13 +7,13 @@ const RootLayout = () => {
   return (
     <div className='h-full'>
       <TopBar />
-      <div className='flex'>
+      <div className='flex h-full'>
         <LeftSideBar />
-        <section>
+        <section className='w-full h-full'>
           <Outlet />
         </section>
       </div>
-      {/* <BottomBar /> */}
+      <BottomBar />
     </div>
   );
 };

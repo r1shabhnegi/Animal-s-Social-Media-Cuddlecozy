@@ -4,7 +4,6 @@ import { getCurrentUser } from '@/appwrite/Api';
 import { useDispatch, useSelector } from 'react-redux';
 import type { TypedUseSelectorHook } from 'react-redux';
 import type { RootState, AppDispatch } from './store';
-import { error } from 'console';
 
 export const initialUser: UserTypes = {
   id: '',
@@ -26,9 +25,9 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     addUserData(state, action) {
-      const { id, name, username, email, imageUrl, bio } = action.payload;
+      const { $id, name, username, email, imageUrl, bio } = action.payload;
       state.userData = {
-        id,
+        id: $id,
         name,
         username,
         email,
