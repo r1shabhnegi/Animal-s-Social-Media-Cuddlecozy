@@ -7,9 +7,9 @@ const RootLayout = () => {
   return (
     <div className='h-full'>
       <TopBar />
-      <div className='flex h-full'>
+      <div className='flex'>
         <LeftSideBar />
-        <section className='w-full h-full'>
+        <section className='w-full'>
           <Outlet />
         </section>
       </div>

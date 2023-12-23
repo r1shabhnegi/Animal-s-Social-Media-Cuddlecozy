@@ -4,7 +4,7 @@ const BottomBar = () => {
   const { pathname } = useLocation();
 
   return (
-    <section className='z-50 flex flex-row w-full sticky justify-between bottom-0 rounded-t-[20px] bg-dark-2 px-5 py-4 md:hidden'>
+    <section className='bottom-bar'>
       {bottomBarLinks.map((link) => {
         const isActive = pathname === link.route;
         return (
