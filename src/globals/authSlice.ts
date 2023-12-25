@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { TypedUseSelectorHook } from 'react-redux';
 import type { RootState, AppDispatch } from './store';
 
-export const initialUser: UserTypes = {
+export const initialUserData: UserTypes = {
   id: '',
   name: '',
   username: '',
@@ -15,7 +15,7 @@ export const initialUser: UserTypes = {
 };
 
 const initialState: InitialStateTypes = {
-  userData: initialUser,
+  data: initialUserData,
   isAuthenticated: false,
   isLoading: false,
 };
@@ -24,9 +24,9 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    addUserData(state, action) {
+    setUserData(state, action) {
       const { $id, name, username, email, imageUrl, bio } = action.payload;
-      state.userData = {
+      state.data = {
         id: $id,
         name,
         username,
@@ -34,7 +34,9 @@ export const authSlice = createSlice({
         imageUrl,
         bio,
       };
-      state.isAuthenticated = !!action.payload;
+    },
+    setAuthentication(state, action) {
+      state.isAuthenticated = action.payload;
     },
     setStatus(state, action) {
       state.isLoading = action.payload;
@@ -42,7 +44,8 @@ export const authSlice = createSlice({
   },
 });
 
-export const { addUserData, setStatus }: any = authSlice.actions;
+export const { setUserData, setStatus, setAuthentication }: any =
+  authSlice.actions;
 
 export const authReducer = authSlice.reducer;
 
@@ -50,12 +53,11 @@ export const checkAuthUser = () => {
   return async function fetchAuthData(dispatch: any) {
     try {
       dispatch(setStatus(true));
-      const data = await getCurrentUser();
-      if (data) {
-        dispatch(addUserData(data));
+      const userData = await getCurrentUser();
+      if (userData) {
+        dispatch(setUserData(userData));
+        dispatch(setAuthentication(true));
         return true;
-      } else {
-        throw new Error('User data not found');
       }
     } catch (error) {
       console.error(error);

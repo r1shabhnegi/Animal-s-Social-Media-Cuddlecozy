@@ -1,21 +1,19 @@
 import { Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SignInForm from './auth/authForms/SignInForm';
-import SignUpForm from './auth/authForms/SignUpForm';
-import RootLayout from './root/RootLayout';
-import Home from './root/root-pages/Home';
+import RootLayout from './_root/RootLayout';
+import AuthLayout from './auth/AuthLayout';
 import { checkAuthUser, useAppDispatch } from './globals/authSlice';
+import { SignInForm, SignUpForm } from './auth/authForms';
 import {
-  AllUsers,
+  Blogs,
+  Community,
   CreatePost,
-  EditPost,
   Explore,
+  Home,
   Profile,
   Saved,
-  UpdateProfile,
-} from './root/root-pages';
-import PostDetail from './root/root-pages/PostDetails';
+} from './_root/root-pages';
 
 const App = () => {
   const navigate = useNavigate();
@@ -37,14 +35,16 @@ const App = () => {
   return (
     <main className='w-full h-screen'>
       <Routes>
-        <Route
-          path='/sign-in'
-          element={<SignInForm />}
-        />
-        <Route
-          path='/sign-up'
-          element={<SignUpForm />}
-        />
+        <Route element={<AuthLayout />}>
+          <Route
+            path='/sign-in'
+            element={<SignInForm />}
+          />
+          <Route
+            path='/sign-up'
+            element={<SignUpForm />}
+          />
+        </Route>
 
         <Route
           path='/'
@@ -54,39 +54,32 @@ const App = () => {
             element={<Home />}
           />
           <Route
-            path='/explore'
-            element={<Explore />}
+            path='/blogs'
+            element={<Blogs />}
           />
           <Route
-            path='/saved'
-            element={<Saved />}
-          />
-          <Route
-            path='/all-users'
-            element={<AllUsers />}
+            path='/community'
+            element={<Community />}
           />
           <Route
             path='/create-post'
             element={<CreatePost />}
           />
-          <Route
-            path='/update-post:id'
-            element={<EditPost />}
-          />
-          <Route
-            path='/posts/:id'
-            element={<PostDetail />}
-          />
 
           <Route
-            path='/profile/:id/*'
-            element={<Profile />}
+            path='/saved'
+            element={<Saved />}
           />
           <Route
-            path='/update-profile/:id'
-            element={<UpdateProfile />}
+            path='/explore'
+            element={<Explore />}
           />
         </Route>
+
+        <Route
+          path='/profile'
+          element={<Profile />}
+        />
       </Routes>
     </main>
   );

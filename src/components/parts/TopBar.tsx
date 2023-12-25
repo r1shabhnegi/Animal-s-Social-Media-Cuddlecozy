@@ -1,28 +1,47 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
-import { useAppSelector } from '@/globals/authSlice';
-import { useSignOutAccount } from '@/tanstack/queriesAndMutations';
+import {
+  useAppDispatch,
+  useAppSelector,
+  setUserData,
+  setAuthentication,
+} from '@/globals/authSlice';
+import { useSignOutAccount } from '@/reactQuery/queriesAndMutations';
 import { useEffect } from 'react';
 
 const TopBar = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const user = useAppSelector((state) => state.authSlice.userData);
+  const user = useAppSelector((state) => state.authSlice.data);
 
   const { mutate: signOutAccount, isSuccess } = useSignOutAccount();
 
   useEffect(() => {
-    if (isSuccess) navigate('/sign-in');
+    if (isSuccess) {
+      navigate('/sign-in');
+      dispatch(
+        setUserData({
+          id: '',
+          name: '',
+          username: '',
+          email: '',
+          imageUrl: '',
+          bio: '',
+        })
+      );
+      dispatch(setAuthentication(false));
+    }
   }, [isSuccess]);
 
   return (
-    <section className='sticky z-50 w-full h-auto flex justify-between items-center'>
+    <section className='sticky z-50 w-full h-[5rem] flex justify-between items-center'>
       <Link
         to='/'
-        className='flex items-center justify-center h-full mx-2 sm:m-4 md:m-6'>
+        className='flex items-center justify-center h-full mx-4 sm:mx-6 md:mx-8'>
         <img
           src='/assets/images/logo.png'
-          className='h-7 sm:h-9 md:h-11'
+          className='h-8 sm:h-11 md:h-12'
           alt='Logo'
         />
       </Link>
@@ -41,19 +60,21 @@ const TopBar = () => {
         <Button
           type='button'
           className='p-0 m-2 sm:m-4 md:m-6'>
-          <div className='hidden md:block p-5 text-left'>
-            <p className='text-xl'>{user.name}</p>
+          <div className='hidden md:block px-4 py-2 text-left'>
+            <p className='text-lg'>{user.name}</p>
             <p
               style={{ color: '#63A6F8' }}
               className='text-sm'>
               @{user.username}
             </p>
           </div>
-          <img
-            src={user.imageUrl}
-            alt='Profile'
-            className='h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 rounded-full'
-          />
+          <Link to='/profile'>
+            <img
+              src={user.imageUrl}
+              alt='Profile'
+              className='h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 rounded-full'
+            />
+          </Link>
         </Button>
       </div>
     </section>
