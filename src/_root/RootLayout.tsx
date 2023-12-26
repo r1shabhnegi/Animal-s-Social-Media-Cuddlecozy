@@ -1,4 +1,5 @@
 import { LeftSideBar, TopBar } from '@/components/parts';
+import BottomBar from '@/components/parts/BottomBar';
 import { Outlet } from 'react-router';
 
 const RootLayout = () => {
@@ -11,6 +12,7 @@ const RootLayout = () => {
           <Outlet />
         </section>
       </div>
+      <BottomBar />
     </div>
   );
 };
