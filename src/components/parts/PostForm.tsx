@@ -15,8 +15,12 @@ import { Input } from '@/components/ui/input';
 import { postValidation } from '../../lib/validation';
 import { Textarea } from '@/components/ui/textarea';
 import { PostFormTypes } from '@/types';
+import { useNavigate } from 'react-router';
+import FileUploader from './FileUploader';
 
 const PostForm = ({ post, action }: PostFormTypes) => {
+  const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof postValidation>>({
     resolver: zodResolver(postValidation),
     defaultValues: {
@@ -44,7 +48,7 @@ const PostForm = ({ post, action }: PostFormTypes) => {
               <FormLabel>Caption</FormLabel>
               <FormControl>
                 <Textarea
-                  className='shad-textarea'
+                  className='h-36 bg-[#282828c1]  rounded-xl border-none focus-visible:ring-1 focus-visible:ring-offset-1 ring-offset-light-3 !important text-xl'
                   {...field}
                 />
               </FormControl>
@@ -60,7 +64,10 @@ const PostForm = ({ post, action }: PostFormTypes) => {
             <FormItem>
               <FormLabel>Location</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  className=' bg-[#282828c1]  rounded-xl border-none focus-visible:ring-1 focus-visible:ring-offset-1 ring-offset-light-3 !important text-xl'
+                  {...field}
+                />
               </FormControl>
 
               <FormMessage />
@@ -74,7 +81,27 @@ const PostForm = ({ post, action }: PostFormTypes) => {
             <FormItem>
               <FormLabel>tags</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  className='bg-[#282828c1] rounded-xl border-none focus-visible:ring-1 focus-visible:ring-offset-1 ring-offset-light-3 !important text-xl'
+                  {...field}
+                />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='file'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Add Photos</FormLabel>
+              <FormControl>
+                <FileUploader
+                  fieldChange={field.onChange}
+                  mediaUrl={post?.imageUrl}
+                />
               </FormControl>
 
               <FormMessage />
@@ -82,7 +109,11 @@ const PostForm = ({ post, action }: PostFormTypes) => {
           )}
         />
         <div>
-          <Button type='button'>Cancel</Button>
+          <Button
+            type='button'
+            onClick={() => navigate(-1)}>
+            Cancel
+          </Button>
           <Button type='submit'>Submit</Button>
         </div>
       </form>
