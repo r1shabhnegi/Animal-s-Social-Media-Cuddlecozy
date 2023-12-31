@@ -4,21 +4,21 @@ export const sidebarConstants = [
     route: '/',
     label: 'Home',
   },
-  {
-    imgURL: '/assets/icons/explore.svg',
-    route: '/explore',
-    label: 'Explore',
-  },
-  {
-    imgURL: '/assets/icons/community.svg',
-    route: '/community',
-    label: 'Community',
-  },
-  {
-    imgURL: '/assets/icons/saved.svg',
-    route: '/saved',
-    label: 'Saved',
-  },
+  // {
+  //   imgURL: '/assets/icons/explore.svg',
+  //   route: '/explore',
+  //   label: 'Explore',
+  // },
+  // {
+  //   imgURL: '/assets/icons/community.svg',
+  //   route: '/community',
+  //   label: 'Community',
+  // },
+  // {
+  //   imgURL: '/assets/icons/saved.svg',
+  //   route: '/saved',
+  //   label: 'Saved',
+  // },
   {
     imgURL: '/assets/icons/add.svg',
     route: '/create-post',
@@ -32,24 +32,24 @@ export const bottomBarConstants = [
     route: '/',
     label: 'Home',
   },
-  {
-    imgURL: '/assets/icons/explore.svg',
-    route: '/explore',
-    label: 'Explore',
-  },
+  // {
+  //   imgURL: '/assets/icons/explore.svg',
+  //   route: '/explore',
+  //   label: 'Explore',
+  // },
   {
     imgURL: '/assets/icons/add.svg',
     route: '/create-post',
     label: 'Create',
   },
-  {
-    imgURL: '/assets/icons/saved.svg',
-    route: '/saved',
-    label: 'Saved',
-  },
-  {
-    imgURL: '/assets/icons/community.svg',
-    route: '/community',
-    label: 'Community',
-  },
+  // {
+  //   imgURL: '/assets/icons/saved.svg',
+  //   route: '/saved',
+  //   label: 'Saved',
+  // },
+  // {
+  //   imgURL: '/assets/icons/community.svg',
+  //   route: '/community',
+  //   label: 'Community',
+  // },
 ];

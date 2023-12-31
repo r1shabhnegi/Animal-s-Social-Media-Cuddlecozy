@@ -2,11 +2,7 @@ import PostCard from '@/components/parts/PostCard';
 import { useGetRecentPosts } from '@/reactQuery/queriesAndMutations';
 
 const Home = () => {
-  const {
-    data: posts,
-    isLoading: isPostLoading,
-    isError: isErrorPosts,
-  } = useGetRecentPosts();
+  const { data: posts, isError: isErrorPosts } = useGetRecentPosts();
 
   if (isErrorPosts) <h1>Something went wrong</h1>;
 
@@ -23,9 +19,6 @@ const Home = () => {
             </li>
           ))}
         </ul>
-      </div>
-      <div className='hidden w-2/4 lg:grid lg:px-10 '>
-        <h2 className='text-[2rem] font-medium text-left w-full pb-5'>Users</h2>
       </div>
     </div>
   );

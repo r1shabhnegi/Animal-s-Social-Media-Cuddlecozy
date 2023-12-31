@@ -7,7 +7,7 @@ const Bottom = () => {
 
   return (
     <nav className='fixed bg-[#0f172a] bottom-0 z-50 md:hidden w-full'>
-      <ul className='flex w-full justify-between px-2'>
+      <ul className='flex w-full justify-around px-2'>
         {bottomBarConstants.map((link) => {
           const isActive = pathname === link.route;
           return (
