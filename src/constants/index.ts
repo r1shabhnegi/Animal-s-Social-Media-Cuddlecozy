@@ -14,7 +14,6 @@ export const sidebarConstants = [
     route: '/community',
     label: 'Community',
   },
-  { imgURL: '/assets/icons/blogs.svg', route: '/blogs', label: 'Blogs' },
   {
     imgURL: '/assets/icons/saved.svg',
     route: '/saved',

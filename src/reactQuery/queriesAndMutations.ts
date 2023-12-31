@@ -1,11 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createAccount,
+  createPost,
+  getPostById,
+  getRecentPosts,
   signInAccount,
   signOutAccount,
   // updatePost,
 } from '@/appwrite/Api';
-import { CreateUserTypes, SignInTypes } from '@/types';
+import { CreatePostTypes, CreateUserTypes, SignInTypes } from '@/types';
+import { QUERY_KEYS } from './queryKey';
 // import { QUERY_KEYS } from './queryKey';
 
 export const useCreateUser = () => {
@@ -25,17 +29,33 @@ export const useSignOutAccount = () => {
     mutationFn: signOutAccount,
   });
 };
-// export const useCreatePost = () => {
-//   const queryClient = useQueryClient();
-//   return useMutation({
-//     mutationFn: (post) => createPost(post),
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({
-//         queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
-//       });
-//     },
-//   });
-// };
+
+export const useCreatePost = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (post: CreatePostTypes) => createPost(post),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
+      });
+    },
+  });
+};
+
+export const useGetRecentPosts = () => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
+    queryFn: getRecentPosts,
+  });
+};
+
+export const useGetPostById = (postId?: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_POST_BY_ID, postId],
+    queryFn: () => getPostById(postId),
+    enabled: !!postId,
+  });
+};
 
 // ============================================================
 // POST QUERIES
@@ -63,13 +83,6 @@ export const useSignOutAccount = () => {
 //     queryKey: [QUERY_KEYS.SEARCH_POSTS, searchTerm],
 //     queryFn: () => searchPosts(searchTerm),
 //     enabled: !!searchTerm,
-//   });
-// };
-
-// export const useGetRecentPosts = () => {
-//   return useQuery({
-//     queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
-//     queryFn: getRecentPosts,
 //   });
 // };
 

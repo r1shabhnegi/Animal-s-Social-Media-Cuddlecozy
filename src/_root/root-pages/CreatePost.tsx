@@ -2,7 +2,7 @@ import PostForm from '@/components/parts/PostForm';
 
 const CreatePost = () => {
   return (
-    <div className='w-full px-16 sm:px-24 md:px-28 lg:px-40 py-5'>
+    <div className='w-full px-16 sm:px-24 md:px-28 lg:px-40 pt-5 pb-20 overflow-scroll'>
       <div className='flex gap-4 items-center pb-10 '>
         <img
           src='/assets/icons/add.svg'

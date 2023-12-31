@@ -13,6 +13,7 @@ import {
   Home,
   Profile,
   Saved,
+  EditPost,
 } from './_root/root-pages';
 
 const App = () => {
@@ -73,6 +74,10 @@ const App = () => {
           <Route
             path='/explore'
             element={<Explore />}
+          />
+          <Route
+            path='/update-post/:id'
+            element={<EditPost />}
           />
         </Route>
 

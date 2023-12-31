@@ -6,7 +6,7 @@ const Bottom = () => {
   const { pathname } = useLocation();
 
   return (
-    <nav className='sticky bottom-0 z-50 md:hidden w-full'>
+    <nav className='fixed bg-[#0f172a] bottom-0 z-50 md:hidden w-full'>
       <ul className='flex w-full justify-between px-2'>
         {bottomBarConstants.map((link) => {
           const isActive = pathname === link.route;

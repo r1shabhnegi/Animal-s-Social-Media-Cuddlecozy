@@ -5,3 +5,4 @@ export { default as Community } from './Community';
 export { default as Profile } from './Profile';
 export { default as CreatePost } from './CreatePost';
 export { default as Saved } from './Saved';
+export { default as EditPost } from './EditPost';
